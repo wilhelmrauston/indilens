@@ -1,0 +1,35 @@
+enum CompanyStatus {
+  IDEATION
+  IN_PROGRESS
+  LAUNCHED
+  ACQUIRED
+  CLOSED
+}
+
+model Company {
+  id          Int           @id @default(autoincrement())
+  name        String        @unique
+  slug        String        @unique  // URL-friendly name
+  tagline     String?       // Short description
+  description String?       // Long description
+  logo        String?       // Logo URL
+  website     String?       // Product website
+  industry    String?       // Industry/category
+  status      CompanyStatus @default(IDEATION)
+  
+  // Product specific fields
+  githubUrl   String?       // GitHub repository
+  demoUrl     String?       // Demo/preview link
+  techStack   String[]      // Technologies used
+  pricing     Json?        // Pricing structure
+  revenue     Int?         // Monthly revenue (if public)
+  launched    DateTime?    // Launch date
+  
+  // Relations
+  users       UserCompany[] // Team members
+  posts       Post[]        // Company posts/updates
+  milestones  Milestone[]   // Major achievements
+  
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}

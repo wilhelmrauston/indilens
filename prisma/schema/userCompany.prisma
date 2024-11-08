@@ -1,0 +1,14 @@
+model UserCompany {
+  user        User       @relation(fields: [userId], references: [id])
+  userId      Int
+  company     Company    @relation(fields: [companyId], references: [id])
+  companyId   Int
+  role        CompanyRole // Role of the user in the company
+  joinedAt    DateTime   @default(now())
+  equity      Float?     // Optional: track equity ownership
+  isActive    Boolean    @default(true)
+
+  @@id([userId, companyId])  // Composite primary key
+  @@index([userId])
+  @@index([companyId])
+}
