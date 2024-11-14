@@ -75,6 +75,7 @@ const handler = async (req, res) =>
     req,
     res,
     {
+      GET: getCompanies,
       POST: createCompany
     },
     {

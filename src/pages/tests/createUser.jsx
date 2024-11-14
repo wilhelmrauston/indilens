@@ -9,7 +9,7 @@ const createUser = async () => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        email: 'wil@rau.com',
+        email: 'wil@radddsu.com',
         password: 'password',
         name: 'Wil Rau'
       })

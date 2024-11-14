@@ -61,17 +61,16 @@ const createUser = async (req, res, prisma) => {
   }
 }
 
-export default function handler(req, res) {
-  console.log('Handler started')
-
-  return defaultHandler(
+const handler = async (req, res) =>
+  defaultHandler(
     req,
     res,
     {
       POST: createUser
     },
     {
-      requiresAuth: false // Set to false for testing
+      requiresAuth: false
     }
   )
-}
+
+export default handler

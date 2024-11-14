@@ -56,7 +56,6 @@ export const internalError = (res, message = 'Internal Server Error') => {
   return failure(res, 500, message)
 }
 
-// Updated defaultHandler function
 export const defaultHandler = async (
   req,
   res,
@@ -79,8 +78,8 @@ export const defaultHandler = async (
 
   try {
     const handler = handlers[method]
-
     let session = null
+
     if (options.requiresAuth) {
       console.log('Getting session')
       session = await getServerSession(req, res, authOptions)
@@ -101,11 +100,27 @@ export const defaultHandler = async (
     }
 
     console.log('About to call handler with Prisma')
+
+    // Modified Prisma handling while keeping the structure
     return await withPrisma(async prisma => {
-      return handler(req, res, prisma)
+      if (!prisma) {
+        console.error('Prisma instance not available')
+        return internalError(res, 'Database connection error')
+      }
+
+      const result = await handler(req, res, prisma)
+
+      // If handler has already sent response, don't try to send again
+      if (!res.writableEnded && result) {
+        return result
+      }
     })
   } catch (err) {
-    console.error('Error in defaultHandler:', err) // Log full error
-    return internalError(res, 'An unexpected error occurred')
+    console.error('Error in defaultHandler:', err)
+
+    // Don't send multiple responses
+    if (!res.writableEnded) {
+      return internalError(res, 'An unexpected error occurred')
+    }
   }
 }

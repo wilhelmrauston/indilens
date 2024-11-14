@@ -27,11 +27,10 @@ if (process.env.NODE_ENV !== 'production') {
 // Utility to use Prisma with enhanced error handling
 export const withPrisma = async operation => {
   try {
-    const result = await operation(prisma)
-    return result || { success: true }
+    // Pass prisma directly and let operation handle response
+    return await operation(prisma)
   } catch (error) {
     if (error.code?.startsWith('P')) {
-      // Prisma-specific error logging
       console.error('Database error:', {
         code: error.code,
         message: error.message
@@ -39,11 +38,7 @@ export const withPrisma = async operation => {
     } else {
       console.error('Non-Prisma error:', error)
     }
-    // Return an error response format that can be handled by your API
-    return {
-      success: false,
-      error: error.message || 'An unexpected error occurred'
-    }
+    throw error // Let defaultHandler catch and handle the error
   }
 }
 

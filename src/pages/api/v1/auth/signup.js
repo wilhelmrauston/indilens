@@ -3,7 +3,7 @@ import {
   invalidRequest,
   internalError,
   successWithJson
-} from '@/lib/api-helpers'
+} from '@/utils/server/api-helpers'
 import { hashPassword } from '@/utils/server/auth'
 import { validateEmail } from '@/utils/server/helpers'
 
