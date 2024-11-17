@@ -4,7 +4,7 @@ import {
   UserIcon,
   Cog6ToothIcon,
   ArrowRightOnRectangleIcon,
-  ExclamationCircleIcon,
+  ExclamationCircleIcon
 } from '@heroicons/react/24/outline'
 import { useSession, signOut } from 'next-auth/react' // Import the useSession hook
 import Link from 'next/link'
@@ -13,7 +13,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function DropdownMenu() {
+export default function Avatar() {
   const { data: session } = useSession() // Get the user session data
 
   const handleSignOut = async () => {
@@ -31,7 +31,7 @@ export default function DropdownMenu() {
     <Menu as='div' className='relative inline-block text-left'>
       <div>
         <Menu.Button className='inline-flex w-full justify-center px-3 py-2'>
-          <UserIcon className='h-9 text-gray-800 transition duration-200 ease-in-out hover:text-teal-600' />
+          <UserIcon className='h-9 transition duration-200 ease-in-out hover:text-teal-600' />
         </Menu.Button>
       </div>
 
@@ -121,7 +121,7 @@ export default function DropdownMenu() {
               <Menu.Item>
                 {({ active }) => (
                   <Link
-                    href='/signup' // Link to your sign-in page
+                    href='/login' // Link to your sign-in page
                     className={classNames(
                       active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                       'block px-4 py-2 text-sm'
