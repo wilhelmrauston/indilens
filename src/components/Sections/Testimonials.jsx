@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
 import { UserIcon } from '@heroicons/react/24/solid'
+import Image from 'next/image'
 
 const testimonials = [
   {
@@ -88,9 +89,11 @@ export default function Testimonials() {
 
   return (
     <>
-      <div class='mx-auto max-w-4xl text-center'>
-        <h2 class='text-base/7 font-semibold text-[#F6B17A]'>Testimonials</h2>
-        <p class='mt-2 text-balance text-5xl font-semibold tracking-tight text-white sm:text-6xl'>
+      <div className='mx-auto max-w-4xl text-center'>
+        <h2 className='text-base/7 font-semibold text-[#F6B17A]'>
+          Testimonials
+        </h2>
+        <p className='mt-2 text-balance text-5xl font-semibold tracking-tight text-white sm:text-6xl'>
           What our happy users say!
         </p>
       </div>
@@ -125,16 +128,19 @@ export default function Testimonials() {
                     {item.text}
                   </p>
                   <div className='flex items-center gap-5 border-t border-gray-200 pt-5'>
-                    {imgError[item.id] ? (
+                    <div className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-100'>
+                      <UserIcon className='h-6 w-6 text-gray-400' />
+                    </div>
+                    {/* {imgError[item.id] ? (
                       <AvatarFallback />
                     ) : (
-                      <img
+                      <Image
                         className='h-10 w-10 rounded-full object-cover'
                         src={item.image}
                         alt={`${item.name} avatar`}
                         onError={() => handleImageError(item.id)}
                       />
-                    )}
+                    )} */}
                     <div>
                       <h5 className='mb-1 font-medium text-[#F6B17A]'>
                         {item.name}

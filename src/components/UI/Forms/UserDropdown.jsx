@@ -4,7 +4,9 @@ import {
   UserIcon,
   Cog6ToothIcon,
   ArrowRightOnRectangleIcon,
-  ExclamationCircleIcon
+  ExclamationCircleIcon,
+  BuildingOffice2Icon,
+  RectangleGroupIcon
 } from '@heroicons/react/24/outline'
 import { useSession, signOut } from 'next-auth/react' // Import the useSession hook
 import Link from 'next/link'
@@ -31,7 +33,7 @@ export default function Avatar() {
     <Menu as='div' className='relative inline-block text-left'>
       <div>
         <Menu.Button className='inline-flex w-full justify-center px-3 py-2'>
-          <UserIcon className='h-9 transition duration-200 ease-in-out hover:text-teal-600' />
+          <UserIcon className='h-9 text-white transition duration-200 ease-in-out' />
         </Menu.Button>
       </div>
 
@@ -77,7 +79,23 @@ export default function Avatar() {
             <div className='py-1'>
               <Menu.Item>
                 {({ active }) => (
-                  <a
+                  <Link
+                    href='/dashboard'
+                    className={classNames(
+                      active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                      'block px-4 py-2 text-sm'
+                    )}
+                  >
+                    <div className='flex flex-row items-center space-x-4'>
+                      <RectangleGroupIcon className='h-5 text-gray-800' />
+                      <p>Dashboard</p>
+                    </div>
+                  </Link>
+                )}
+              </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <Link
                     href='#'
                     className={classNames(
                       active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
@@ -85,10 +103,10 @@ export default function Avatar() {
                     )}
                   >
                     <div className='flex flex-row items-center space-x-4'>
-                      <ExclamationCircleIcon className='h-5 text-gray-800' />
-                      <p>Example link</p>
+                      <BuildingOffice2Icon className='h-5 text-gray-800' />
+                      <p>Showcase</p>
                     </div>
-                  </a>
+                  </Link>
                 )}
               </Menu.Item>
             </div>

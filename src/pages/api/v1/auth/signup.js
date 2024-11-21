@@ -7,11 +7,13 @@ import {
 import { hashPassword } from '@/utils/server/auth'
 import { validateEmail } from '@/utils/server/helpers'
 
-const createUser = async (req, res, session, prisma) => {
-  const { name, email, password } = req.body
+const createUser = async (req, res, prisma) => {
+  const { email, password, name, slug } = req.body
 
-  if (!email || !password || !name) {
-    return invalidRequest(res, 'Email, password, and name are required')
+  console.log(req.body)
+
+  if (!slug || !email || !password || !name) {
+    return invalidRequest(res, 'Slug, Email, password, and name are required')
   }
 
   if (!validateEmail(email)) {
@@ -22,14 +24,17 @@ const createUser = async (req, res, session, prisma) => {
     return invalidRequest(res, 'Password must be at least 6 characters long')
   }
 
+  console.log(prisma)
   try {
     // Check if user already exists
-    const existingUser = await prisma.user.findUnique({
-      where: { email }
+    const existingUserOrSlug = await prisma.user.findFirst({
+      where: {
+        OR: [{ email }, { slug }]
+      }
     })
 
-    if (existingUser) {
-      return invalidRequest(res, 'User with this email already exists')
+    if (existingUserOrSlug) {
+      return invalidRequest(res, 'User with this email or slug already exists')
     }
 
     // Hash password
@@ -38,6 +43,7 @@ const createUser = async (req, res, session, prisma) => {
     // Create user
     const user = await prisma.user.create({
       data: {
+        slug,
         email,
         password: hashedPassword,
         name,
@@ -75,7 +81,7 @@ const handler = async (req, res) =>
       POST: createUser
     },
     {
-      requiresAuth: true
+      requiresAuth: false
     }
   )
 

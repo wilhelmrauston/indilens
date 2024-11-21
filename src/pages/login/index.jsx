@@ -6,10 +6,10 @@ export default function AuthForm() {
   const router = useRouter()
   const [isSignUpVisible, setIsSignUpVisible] = useState(false)
   const [formSignUp, setFormSignUp] = useState({
+    slug: '',
     name: '',
     email: '',
-    password: '',
-    role: ''
+    password: ''
   })
   const [formSignIn, setFormSignIn] = useState({
     email: '',
@@ -112,6 +112,13 @@ export default function AuthForm() {
               <span>or use your email for registration</span>
               <input
                 type='text'
+                placeholder='Slug'
+                name='slug'
+                value={formSignUp.slug}
+                onChange={handleChangeUp}
+              />
+              <input
+                type='text'
                 placeholder='Name'
                 name='name'
                 value={formSignUp.name}
@@ -131,16 +138,10 @@ export default function AuthForm() {
                 value={formSignUp.password}
                 onChange={handleChangeUp}
               />
-              <input
-                type='text'
-                placeholder='Role'
-                name='role'
-                value={formSignUp.role}
-                onChange={handleChangeUp}
-              />
               <button type='submit'>Sign Up</button>
             </form>
           </div>
+
           <div
             className={`form-container sign-in ${
               !isSignUpVisible ? '' : 'active'
