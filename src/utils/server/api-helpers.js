@@ -108,7 +108,7 @@ export const defaultHandler = async (
         return internalError(res, 'Database connection error')
       }
 
-      const result = await handler(req, res, prisma)
+      const result = await handler(req, res, session, prisma)
 
       // If handler has already sent response, don't try to send again
       if (!res.writableEnded && result) {

@@ -1,4 +1,4 @@
-import { defaultHandler } from '@utils/server/api-helpers'
+import { defaultHandler } from '@/utils/server/api-helpers'
 
 const getCompany = async (req, res) => {}
 

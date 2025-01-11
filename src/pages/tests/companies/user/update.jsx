@@ -11,7 +11,7 @@ export default function Companies() {
       body: JSON.stringify({
         id: 1,
         tagline: 'this company blows',
-        description: 'this company used to blow a lot of load',
+        description: 'this company used to blow',
         logo: 'somelogourl',
         website: 'rauston.se',
         industry: 'tech',

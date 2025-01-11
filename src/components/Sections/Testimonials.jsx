@@ -9,24 +9,21 @@ const testimonials = [
     rating: 4.9,
     text: 'Pagedone has made it possible for me to stay on top of my portfolio and make informed decisions quickly and easily.',
     name: 'Jane D',
-    role: 'CEO',
-    image: '/api/placeholder/40/40'
+    role: 'CEO'
   },
   {
     id: 2,
     text: 'Thanks to pagedone, I feel more informed and confident about my investment decisions than ever before.',
     rating: 4.9,
     name: 'Harsh P.',
-    role: 'Product Designer',
-    image: '/api/placeholder/40/40'
+    role: 'Product Designer'
   },
   {
     id: 3,
     text: 'The customer service team at pagedone went above and beyond to help me resolve a billing issue.',
     rating: 4.9,
     name: 'Alex K.',
-    role: 'Design Lead',
-    image: '/api/placeholder/40/40'
+    role: 'Design Lead'
   }
 ]
 

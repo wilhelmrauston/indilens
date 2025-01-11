@@ -7,10 +7,10 @@ import {
 import { hashPassword } from '@/utils/server/auth'
 import { validateEmail } from '@/utils/server/helpers'
 
-const createUser = async (req, res, prisma) => {
+const createUser = async (req, res, session, prisma) => {
   const { email, password, name, slug } = req.body
 
-  console.log(req.body)
+  console.log('body', req.body)
 
   if (!slug || !email || !password || !name) {
     return invalidRequest(res, 'Slug, Email, password, and name are required')

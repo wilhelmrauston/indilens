@@ -13,7 +13,7 @@ model Post {
   
   // Relations
   author      User      @relation(fields: [authorId], references: [id])
-  authorId    Int
+  authorId    Int       @unique
   company     Company   @relation(fields: [companyId], references: [id])
   companyId   Int
   comments    Comment[]

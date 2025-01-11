@@ -45,7 +45,8 @@ export const authOptions = {
                 email: true,
                 password: true,
                 name: true,
-                role: true
+                role: true,
+                slug: true
               }
             })
           })
@@ -78,6 +79,7 @@ export const authOptions = {
         token.id = user.id
         token.role = user.role
         token.email = user.email
+        token.slug = user.slug
       }
       return token
     },
@@ -85,6 +87,7 @@ export const authOptions = {
       session.user.id = token.id
       session.user.role = token.role
       session.user.email = token.email
+      session.user.slug = token.slug
       return session
     }
   },

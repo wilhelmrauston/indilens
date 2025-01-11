@@ -1,13 +1,68 @@
-// pages/api/companies/create.js
+import slugify from 'slugify'
 import {
   defaultHandler,
   invalidRequest,
-  internalError
-} from '@/lib/api-helpers'
-import slugify from 'slugify' // Make sure to npm install slugify
+  internalError,
+  successWithJson
+} from '@/utils/server/api-helpers'
+
+const getCompanies = async (req, res, session, prisma) => {
+  try {
+    const companies = await prisma.company.findMany({
+      where: {
+        users: {
+          some: {
+            userId: session.user.id
+          }
+        }
+      },
+      include: {
+        users: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                email: true
+              }
+            }
+          }
+        }
+      },
+      orderBy: {
+        createdAt: 'desc'
+      }
+    })
+
+    return successWithJson(res, companies)
+  } catch (error) {
+    console.error('Error fetching companies:', error)
+    throw error
+  }
+}
 
 const createCompany = async (req, res, session, prisma) => {
-  const { name } = req.body
+  console.log('Request body:', JSON.stringify(req.body, null, 2))
+  console.log('Session:', session)
+  console.log('Request body:', req.body)
+
+  if (!session?.user?.id) {
+    return invalidRequest(res, 'User not authenticated')
+  }
+
+  const {
+    name,
+    tagline,
+    description,
+    website,
+    industry,
+    status,
+    githubUrl,
+    demoUrl,
+    techStack,
+    pricing,
+    revenue
+  } = req.body
 
   if (!name) {
     return invalidRequest(res, 'Company name is required')
@@ -20,53 +75,60 @@ const createCompany = async (req, res, session, prisma) => {
       strict: true
     })
 
-    // Use transaction to ensure both company and relation are created
-    const result = await prisma.$transaction(async tx => {
-      // Create the company
-      const company = await tx.company.create({
-        data: {
-          name,
-          slug,
-          // Connect founder through UserCompany relation
-          users: {
-            create: {
-              user: {
-                connect: { id: session.user.id }
-              },
-              role: 'FOUNDER',
-              isActive: true
-            }
+    // Create the company
+    const company = await prisma.company.create({
+      data: {
+        name,
+        slug,
+        tagline: tagline || '',
+        description: description || '',
+        website: website || '',
+        industry: industry || '',
+        status: status || 'IDEATION',
+        githubUrl: githubUrl || '',
+        demoUrl: demoUrl || '',
+        techStack: techStack || [],
+        pricing: pricing || {},
+        revenue: revenue || null,
+        users: {
+          create: {
+            user: {
+              connect: { id: session.user.id }
+            },
+            role: 'FOUNDER',
+            isActive: true
           }
-        },
-        // Include the relations in response
-        include: {
-          users: {
-            include: {
-              user: {
-                select: {
-                  id: true,
-                  name: true,
-                  email: true
-                }
+        }
+      },
+      include: {
+        users: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                email: true
               }
             }
           }
         }
-      })
-
-      return company
+      }
     })
 
-    return successWithJson(res, result)
+    return res.status(200).json({ success: true, data: company })
   } catch (error) {
     console.error('Company creation error:', error)
-
-    // Handle unique constraint violation
     if (error.code === 'P2002') {
-      return invalidRequest(res, 'A company with this name already exists')
+      return res.status(400).json({
+        success: false,
+        error: 'A company with this name already exists'
+      })
     }
-
-    return internalError(res)
+    return res.status(500).json({
+      success: false,
+      error: 'Failed to create company',
+      details: error.message
+    })
   }
 }
 
